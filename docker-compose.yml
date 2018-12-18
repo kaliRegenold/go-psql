@@ -1,0 +1,17 @@
+version: '3'
+services:
+    go-post:
+        build:
+            context: go/
+            dockerfile: Dockerfile
+        env_file: psql_env
+        ports:
+            - "8080:8080"
+        depends_on:
+            - postgres
+    postgres:
+        build:
+            context: postgres/
+            dockerfile: Dockerfile
+        ports:
+            - "5432:5432"
