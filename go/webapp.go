@@ -26,6 +26,10 @@ func main() {
 
     r := mux.NewRouter()
     r.HandleFunc("/ping", ping_handler).Methods("GET")
+    r.HandleFunc("/user", get_all_user).Methods("GET")
+    r.HandleFunc("/user/{id}", get_user).Methods("GET")
+    r.HandleFunc("/user/{id}", create_user).Methods("POST")
+    r.HandleFunc("/user/{id}", delete_user).Methods("DELETE")
     http.ListenAndServe(":8080", r)
 }
 
@@ -38,4 +42,3 @@ func ping_handler(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "Success pinging database\n")
     }
 }
-
