@@ -25,17 +25,25 @@ func main() {
     db = d
 
     r := mux.NewRouter()
+    r.Use(commonMiddleware)
     r.HandleFunc("/ping", ping_handler).Methods("GET")
     r.HandleFunc("/user/{id}", get_user).Methods("GET")
     http.ListenAndServe(":8080", r)
 }
 
+func commonMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Add("Content-Type", "application/json")
+        next.ServeHTTP(w, r)
+    })
+}
 
 func ping_handler(w http.ResponseWriter, r *http.Request) {
     err := db.Ping()
     if err != nil {
-        fmt.Fprintf(w, "%s\n", err)
+        error(500, w, fmt.Sprintf("%s\n", err))
     } else {
-        fmt.Fprintf(w, "Success pinging database\n")
+        w.WriteHeader(200)
+        w.Write([]byte("Success pinging database\n"))
     }
 }

@@ -8,12 +8,18 @@ import(
 )
 
 type user struct {
-    UserId     int
+    UserId      int
     Lastname    string
     Firstname   string
     State       string
     City        string
 }
+
+func error(errCode int, w http.ResponseWriter, message string) {
+    w.WriteHeader(errCode)
+    w.Write([]byte(message))
+}
+
 
 func get_user(w http.ResponseWriter, r *http.Request) {
   params := mux.Vars(r)
@@ -28,16 +34,17 @@ func get_user(w http.ResponseWriter, r *http.Request) {
     &u.City,)
 
   if err != nil {
-    fmt.Fprintf(w, "%s\n", err)
+    error(404, w, fmt.Sprintf("%s\n", err))
     return
   }
 
   json_user, err := json.Marshal(u)
 
   if err != nil {
-    fmt.Fprintf(w, "%s\n", err)
+    error(500, w, fmt.Sprintf("%s\n", err))
     return
   }
 
-  fmt.Fprintf(w, string(json_user))
+  w.WriteHeader(200)
+  w.Write(json_user)
 }
