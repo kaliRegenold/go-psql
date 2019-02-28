@@ -9,9 +9,14 @@ services:
             - "8080:8080"
         depends_on:
             - postgres
+            - redis
     postgres:
         build:
             context: postgres/
             dockerfile: Dockerfile
         ports:
             - "5432:5432"
+    redis:
+        build:
+            context: redis/
+            dockerfile: Dockerfile
