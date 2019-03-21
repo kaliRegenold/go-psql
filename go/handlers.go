@@ -15,7 +15,7 @@ type user struct {
     City        string
 }
 
-func error(errCode int, w http.ResponseWriter, message string) {
+func error_out(errCode int, w http.ResponseWriter, message string) {
     w.WriteHeader(errCode)
     w.Write([]byte(message))
 }
@@ -34,14 +34,14 @@ func get_user(w http.ResponseWriter, r *http.Request) {
     &u.City,)
 
   if err != nil {
-    error(404, w, fmt.Sprintf("%s\n", err))
+    error_out(404, w, fmt.Sprintf("%s\n", err))
     return
   }
 
   json_user, err := json.Marshal(u)
 
   if err != nil {
-    error(500, w, fmt.Sprintf("%s\n", err))
+    error_out(500, w, fmt.Sprintf("%s\n", err))
     return
   }
 
