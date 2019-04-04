@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
     "encoding/json"
     "github.com/gorilla/mux"
     "net/http"
@@ -26,7 +26,7 @@ func get_user(w http.ResponseWriter, r *http.Request) {
   u := user{}
   stmt := `SELECT user_id, lastname, firstname, state, city FROM "users" WHERE user_id=$1;`
 
-  err := db.QueryRow(stmt, params["id"]).Scan(
+  err := p_db.QueryRow(stmt, params["id"]).Scan(
     &u.UserId,
     &u.Lastname,
     &u.Firstname,
